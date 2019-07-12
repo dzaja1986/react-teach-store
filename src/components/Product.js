@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 import {FaSearch, FaCartPlus} from 'react-icons/fa';
 import {ProductConsumer} from '../context';
 
-export default function Product({product}) {
+export default function Product({ product }) {
     return(
         <ProductConsumer>
         {value => {
@@ -17,7 +17,7 @@ col-md-6 col-lg-4 my-3">
     <img src={product.image} className="card-img-top p-5" alt="product" 
     style={{height:"300px"}}/>
     <div className="product-icons">
-        <Link to={`/product/${product.id}`} onClick={() => setSingleProduct(product.id)}>
+        <Link to={`/products/${product.id}`} onClick={() => setSingleProduct(product.id)}>
             <FaSearch className="icon" />
         </Link>
         <FaCartPlus className="icon" onClick={() => addToCart(product.id)} />
