@@ -15,7 +15,7 @@ class ProductProvider extends Component {
     cartItems: 0,
     cartSubTotal: 0,
     cartTax: 0,
-    carTotal: 0,
+    cartTotal: 0,
     storeProducts: [],
     filteredProducts: [],
     featuredProducts: [],
@@ -235,12 +235,43 @@ class ProductProvider extends Component {
   };
   //handle filtering
   handleChange = (event) => {
-    console.log(event);
+    // console.log(event);
+    const name = event.target.name;
+    const value = event.target.type === "checkbox" ? event.target.checked : event.target.value;
+    // console.log(`Name : ${name}, Value ${value}`)
+    this.setState({
+      [name]: value
+    }, this.sortData );
 
-  }
+  };
 sortData = () => {
+  // console.log("sorting data....")
+  const {storeProducts, price, company, shipping, search} = this.state;
+  let tempPrice = parseInt(price);
 
-}
+  // console.log(typeof tempPrice)
+  let tempProducts = [...storeProducts];
+  //filtering based on price
+  tempProducts = tempProducts.filter(item => item.price <= tempPrice )
+  //filtered based on company
+  if(company !== "all") {
+    tempProducts = tempProducts.filter(item => item.company === company)
+  } 
+  if(shipping) {
+    tempProducts = tempProducts.filter(item => item.freeShipping === true);
+  }
+  if(search.length > 0) {
+    tempProducts = tempProducts.filter(item =>{
+      let tempSearch = search.toLowerCase();
+      let tempTitle = item.title.toLowerCase().slice(0, search.length);
+      if(tempSearch === tempTitle) {
+        return item;
+      }
+    })
+  }
+
+  this.setState({filteredProducts:tempProducts});
+};
   render() {
     return (
       <ProductContext.Provider
